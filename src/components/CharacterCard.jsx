@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom'
 
 const CharacterCard = ({ name, image, id }) =>
   <>
-    <Link to={`/characters/${id}`}>
+    <Link to={`/character/${id}`}>
       <figure>
         <img src={image} alt={name} />
         <figcaption>{name}</figcaption>

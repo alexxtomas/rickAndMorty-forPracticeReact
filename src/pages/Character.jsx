@@ -1,16 +1,25 @@
-// import { useEffect, useState } from 'react'
+import { useContext, useEffect } from 'react'
 import { useParams } from 'react-router-dom'
-import { useCharacters } from '../hooks/useCharacters'
+import { CharactersContext } from '../context/CharactersContext'
+import rickAndMorty from '../services/rickAndMorty'
 const Character = () => {
   const { id } = useParams()
-  const { characters: character } = useCharacters(id)
+  const { characters } = useContext(CharactersContext)
 
-  const handleClick = (evt) => {
-    // const { id: btnId } = evt.target
-    // setCharacters(
-  }
+  let character = characters?.find(character => character.id === Number(id))
 
-  if (!character) return <div className='error'>Character Not Found</div>
+  useEffect(() => {
+    if (!character) {
+      rickAndMorty.getCharacterById(id)
+        .then(data => {
+          character = data
+        })
+        .catch(e => e)
+    }
+  })
+
+  if (!character) return <h1>Error Character Not Found</h1>
+
   return (
     <div className='character-details'>
 
@@ -18,13 +27,11 @@ const Character = () => {
       <ul>
         <li>Status: {character.status}</li>
         <li>Species: {character.species}</li>
-        <li>Type: {character.type}</li>
         <li>Gender: {character.gender}</li>
         <li>Origin: {character.origin.name}</li>
         <li>Location: {character.location.name}</li>
       </ul>
       <img src={character.image} alt={character.name} />
-      <button id={character.id} onClick={handleClick}>Delete</button>
 
     </div>
   )

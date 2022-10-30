@@ -1,20 +1,21 @@
 import { useEffect, useState } from 'react'
 import rickAndMorty from '../services/rickAndMorty'
+import localStorage from '../utils/localStorage'
 
-export const useCharacters = (id) => {
-  const [characters, setCharacters] = useState(id ? null : [])
-  const [loading, setLoading] = useState(false)
-
-  const request = id ? rickAndMorty.getCharacterById(id) : rickAndMorty.getAllCharacters()
+export const useCharacters = () => {
+  const [characters, setCharacters] = useState([])
 
   useEffect(() => {
-    setLoading(true)
-    request
-      .then(data => {
-        setCharacters(data)
-        setLoading(false)
-      })
+    if (!localStorage.getCharacters()) {
+      rickAndMorty.getAllCharacters()
+        .then(data => {
+          setCharacters(data)
+          localStorage.setCharacters(data)
+        })
+    } else {
+      setCharacters(localStorage.getCharacters())
+    }
   }, [])
 
-  return { characters, loading, setCharacters }
+  return { characters }
 }

@@ -1,13 +1,8 @@
-// import { useEffect, useState } from 'react'
-// import rickAndMorty from '../services/rickAndMorty'
 import { useCharacters } from '../hooks/useCharacters'
 import CharacterCard from './CharacterCard'
-import Loading from './Loading'
 
 const CharactersList = () => {
-  const { characters, loading } = useCharacters()
-
-  if (loading) <Loading />
+  const { characters } = useCharacters()
 
   return (
     <div className='characters-container'>

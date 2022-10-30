@@ -1,19 +1,16 @@
-import axios from 'axios'
 
 const baseURL = 'https://rickandmortyapi.com/api/character'
 
-const getAllCharacters = async () => {
-  const { data } = await axios.get(`${baseURL}`)
-  return data?.results
-}
+const getAllCharacters = () =>
+  fetch(baseURL)
+    .then(res => res.json())
+    .then(json => json?.results)
+    .catch(e => e)
 
-const getCharacterById = async (id) => {
-  try {
-    const { data } = await axios.get(`${baseURL}/${id}`)
-    return data
-  } catch (e) {
-    throw new Error('Character Not Found')
-  }
-}
+const getCharacterById = (id) =>
+  fetch(`${baseURL}/${id}`)
+    .then(res => res.json())
+    .then(json => json)
+    .catch(e => e)
 
 export default { getAllCharacters, getCharacterById }
