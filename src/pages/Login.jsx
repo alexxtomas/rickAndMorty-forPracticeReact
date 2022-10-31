@@ -8,8 +8,9 @@ const Login = () => {
   const navigate = useNavigate()
   const { state } = useLocation()
 
-  const handleClick = () => {
-    login()
+  const handleSubmit = async (evt) => {
+    evt.preventDefault()
+    await login(username, password)
     navigate(state ? state.pathname : '/')
   }
   const inlineStyle = {
@@ -19,10 +20,10 @@ const Login = () => {
 
   }
   return (
-    <form>
+    <form onSubmit={handleSubmit}>
       <input value={username} onChange={(evt) => setUsername(evt.target.value)} type='text' required placeholder='username' autoComplete='none' style={inlineStyle} />
       <input value={password} onChange={(evt) => setPassword(evt.target.value)} type='password' required placeholder='password' style={inlineStyle} />
-      <button onClick={handleClick} style={inlineStyle}>Login</button>
+      <button style={inlineStyle}>Login</button>
     </form>
   )
 }

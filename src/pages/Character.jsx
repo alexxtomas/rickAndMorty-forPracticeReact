@@ -16,7 +16,7 @@ const Character = () => {
         })
         .catch(e => e)
     }
-  })
+  }, [])
 
   if (!character) return <h1>Error Character Not Found</h1>
 

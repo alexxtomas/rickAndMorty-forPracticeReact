@@ -1,4 +1,3 @@
-
 const setCharacters = (characters) => {
   window.localStorage.setItem('characters', JSON.stringify(characters))
 }
@@ -8,13 +7,15 @@ const getCharacters = () => {
   return JSON.parse(characters)
 }
 
-const setUser = (user) => {
-  window.localStorage.setItem('user', JSON.stringify(user))
+const setUser = (username, password) => {
+  window.localStorage.setItem('user', JSON.stringify({ username, password }))
 }
 
 const getUser = () => {
-  const user = window.localStorage.getItem('user')
-  return JSON.parse(user)
+  const data = window.localStorage.getItem('user')
+  if (!data) return undefined
+  const user = JSON.parse(data)
+  return user
 }
 
 const removeUser = () => {

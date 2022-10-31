@@ -4,12 +4,10 @@ import Main from './components/Main'
 import { AuthProvider } from './context/AuthenticatedContext'
 import { CharactersProvider } from './context/CharactersContext'
 
-import navPaths from './utils/navPaths'
-
 const App = () =>
   <>
-    <Header elements={navPaths} />
     <AuthProvider>
+      <Header />
       <CharactersProvider>
         <Main />
       </CharactersProvider>

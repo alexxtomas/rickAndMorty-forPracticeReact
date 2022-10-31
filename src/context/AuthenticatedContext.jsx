@@ -1,4 +1,6 @@
-import { createContext, useState } from 'react'
+import { createContext, useEffect, useState } from 'react'
+import ShowError from '../components/ShowError'
+import users from '../services/users'
 import localStorage from '../utils/localStorage'
 
 export const Context = createContext()
@@ -6,11 +8,22 @@ export const Context = createContext()
 export const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false)
 
-  if (localStorage.getUser()) setIsAuthenticated(true)
+  useEffect(() => {
+    (async () => {
+      const userFromLocalStorage = localStorage.getUser()
+      if (userFromLocalStorage) {
+        const isAValidUser = await users.validate(userFromLocalStorage)
+        if (isAValidUser) setIsAuthenticated(true)
+      }
+    })()
+  }, [])
 
-  const login = (user) => {
+  const login = async (username, password) => {
+    const loggedUser = await users.validate({ username, password })
+    if (!loggedUser) return <ShowError errMessage='Wrong username or password, please try again' />
     setIsAuthenticated(true)
-    localStorage.setUser(user)
+    localStorage.setUser(username, password)
+    return loggedUser
   }
 
   const logout = () => {
