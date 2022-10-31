@@ -1,19 +1,19 @@
 import { useEffect, useState } from 'react'
 import rickAndMorty from '../services/rickAndMorty'
-import localStorage from '../utils/localStorage'
 
 export const useCharacters = () => {
   const [characters, setCharacters] = useState([])
 
   useEffect(() => {
-    if (!localStorage.getCharacters()) {
+    if (!window.localStorage.getItem('characters')) {
       rickAndMorty.getAllCharacters()
         .then(data => {
           setCharacters(data)
-          localStorage.setCharacters(data)
+          window.localStorage.setItem('characters', JSON.stringify(data))
         })
     } else {
-      setCharacters(localStorage.getCharacters())
+      const data = window.localStorage.getItem('characters')
+      setCharacters(JSON.parse(data))
     }
   }, [])
 

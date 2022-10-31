@@ -2,3 +2,7 @@ header nav ul li .is-active {
     font-weight: bold;
     pointer-events: none;
 }
+
+form * {
+    display: block;
+}

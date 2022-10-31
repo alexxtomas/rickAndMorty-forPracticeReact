@@ -25,6 +25,7 @@ const Main = () => {
         {
           isAuthenticated ? <Route path='logout' element={<Logout />} /> : <Route path='login' element={<Login />} />
         }
+
         <Route path='*' element={<NotFound />} />
       </Routes>
     </main>

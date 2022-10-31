@@ -1,34 +1,18 @@
-import { createContext, useEffect, useState } from 'react'
-import ShowError from '../components/ShowError'
-import users from '../services/users'
-import localStorage from '../utils/localStorage'
+import { createContext, useState } from 'react'
 
 export const Context = createContext()
 
 export const AuthProvider = ({ children }) => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false)
+  const [isAuthenticated, setIsAuthenticated] = useState(!!window.localStorage.getItem('logged'))
 
-  useEffect(() => {
-    (async () => {
-      const userFromLocalStorage = localStorage.getUser()
-      if (userFromLocalStorage) {
-        const isAValidUser = await users.validate(userFromLocalStorage)
-        if (isAValidUser) setIsAuthenticated(true)
-      }
-    })()
-  }, [])
-
-  const login = async (username, password) => {
-    const loggedUser = await users.validate({ username, password })
-    if (!loggedUser) return <ShowError errMessage='Wrong username or password, please try again' />
+  const login = () => {
     setIsAuthenticated(true)
-    localStorage.setUser(username, password)
-    return loggedUser
+    window.localStorage.setItem('logged', 'true')
   }
 
   const logout = () => {
     setIsAuthenticated(false)
-    localStorage.removeUser()
+    window.localStorage.clear()
   }
 
   return (
